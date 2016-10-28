@@ -1,5 +1,16 @@
 package edu.calvin.harambe.knowledgeshare;
 
+/**
+ * News Activity (NewsActivity.java)
+ * This class provides the workings for the News Activity
+ * This activity could be called our "main" activity,
+ * as it is the platform in which the other classes fit
+ *
+ * @author: Corey Noble (cjn8)
+ * @version: 1.0 (Fall, 2016)
+ */
+
+// Imports (Android)
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -11,15 +22,19 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 
+// Imports (Java)
 import java.util.ArrayList;
 import java.util.List;
 
+// Activity class
 public class NewsActivity extends AppCompatActivity {
 
+    // Instance variables
     private RecyclerView recyclerView;
     private NewsCardAdapter adapter;
     private List<NewsCard> cardList;
 
+    // Initialize activity and build the card list
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +49,7 @@ public class NewsActivity extends AppCompatActivity {
         setupCards();
     }
 
+    // Add cards (now they are just test cards)
     private void setupCards() {
         NewsCard card = new NewsCard("Breaking News", "Calvin strikes oil", 1, 1);
         cardList.add(card);
@@ -53,12 +69,14 @@ public class NewsActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    // Create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
         return true;
     }
 
+    // Go to different activity if selected from the options menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
