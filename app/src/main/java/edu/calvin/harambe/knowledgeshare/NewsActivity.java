@@ -84,6 +84,7 @@ public class NewsActivity extends AppCompatActivity {
         mainAdapter.notifyDataSetChanged();
     }
 
+    // Format cards with colors
     public void formatCards() {
         for (int i = 0; i < cardList.size(); i++) {
             NewsCard currentCard = cardList.get(i);
