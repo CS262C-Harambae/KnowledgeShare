@@ -13,6 +13,7 @@ public class NewsCard {
     
     // Instance variables
     private String headline;
+    private String sender;
     private String story;
     private int color;
     private int category;
@@ -20,14 +21,16 @@ public class NewsCard {
     // Constructor
     public NewsCard() {
         this.headline = "Sample Headline";
+        this.sender = "cjn8@students.calvin.edu";
         this.story = "Sample Story";
         this.color = 1;
         this.category = 1;
     }
 
     // Explicit constructor
-    public NewsCard(String headline, String story, int color, int category) {
+    public NewsCard(String headline, String sender, String story, int color, int category) {
         this.headline = headline;
+        this.sender = sender;
         this.story = story;
         this.color = color;
         this.category = category;
@@ -42,6 +45,12 @@ public class NewsCard {
     public void setHeadline(String headline) {
         this.headline = headline;
     }
+
+    // Sender accessor
+    public String getSender() { return sender; }
+
+    // Sender mutator
+    public void setSender() { this.sender = sender; }
 
     // Story accessor
     public String getStory() {

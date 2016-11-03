@@ -10,6 +10,8 @@ package edu.calvin.harambe.knowledgeshare;
 
 // Imports (Android)
 import android.content.Context;
+import android.graphics.Color;
+import android.provider.ContactsContract;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -36,13 +38,15 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.Haramb
         
         // Instance variables
         public TextView headline;
-        public TextView story;
+        public TextView sender;
+        public ImageView color;
 
         // Explicit constructor
         public HarambeViewHolder(View view) {
             super(view);
             headline = (TextView) view.findViewById(R.id.headline);
-            story = (TextView) view.findViewById(R.id.story);
+            sender = (TextView) view.findViewById(R.id.sender);
+            color = (ImageView) view.findViewById(R.id.colorBar);
         }
     }
 
@@ -64,7 +68,13 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.Haramb
     public void onBindViewHolder(final HarambeViewHolder holder, int position) {
         NewsCard card = cardList.get(position);
         holder.headline.setText(card.getHeadline());
-        holder.story.setText(card.getStory());
+        holder.sender.setText(card.getSender());
+        Integer colorBlue = 1;
+        Integer tf = Integer.compare(card.getColor(), colorBlue);
+        boolean tf2 = (tf != 0);
+        if (!tf2) {
+            holder.color.setBackgroundColor(Color.rgb(9, 94, 242));
+        }
     }
 
     // Get size of cardList

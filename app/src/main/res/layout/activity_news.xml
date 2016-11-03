@@ -1,12 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_content"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:fitsSystemWindows="true">
 
-    <include layout="@layout/card_table"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/searchField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toStartOf="@+id/searchButton"
+                android:inputType="textPersonName"
+                android:text="@string/search_bar"
+                android:ems="10" />
+
+            <Button
+                android:id="@+id/searchButton"
+                android:text="@string/search_button"
+                android:layout_width="128dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true" />
+
+        </RelativeLayout>
+
+        <include layout="@layout/card_table"/>
+
+    </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

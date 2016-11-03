@@ -16,7 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AboutActivity" />
-        <activity android:name=".HarambeActivity"></activity>
+        <activity android:name=".HarambeActivity" />
     </application>
 
 </manifest>
