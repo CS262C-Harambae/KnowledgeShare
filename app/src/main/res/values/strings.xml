@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">KnowledgeShare</string>
-    <string name="search_bar"></string>
-    <string name="search_button">Search</string>
+    <string name="search_string"></string>
+    <string name="search_button">Cancel</string>
 </resources>
