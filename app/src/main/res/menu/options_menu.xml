@@ -8,10 +8,6 @@
         android:title="Search"
         my_app:actionViewClass="android.widget.SearchView"
         my_app:showAsAction="ifRoom"/>
-    <item android:id="@+id/searchMenuItem"
-        android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
-        my_app:showAsAction="never"/>
     <item android:id="@+id/aboutActivity"
         android:title="About"/>
     <item android:id="@+id/harambeActivity"
