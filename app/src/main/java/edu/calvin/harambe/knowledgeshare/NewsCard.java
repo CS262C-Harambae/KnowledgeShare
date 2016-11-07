@@ -18,7 +18,7 @@ public class NewsCard {
     private int color;
     private int category;
 
-    // Constructor
+    // Default constructor
     public NewsCard() {
         this.headline = "Sample Headline";
         this.sender = "cjn8@students.calvin.edu";
