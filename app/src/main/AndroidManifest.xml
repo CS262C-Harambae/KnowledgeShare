@@ -22,7 +22,7 @@
         </activity>
         <activity android:name=".AboutActivity" />
         <activity android:name=".HarambeActivity" />
-        <activity android:name=".NewsCardActivity"></activity>
+        <activity android:name=".NewsCardActivity" />
     </application>
 
 </manifest>
