@@ -28,7 +28,7 @@
         android:layout_below="@+id/ncHeadline"
         android:layout_alignParentStart="true"
         android:layout_marginTop="12dp"
-        android:textSize="18sp" />
+        android:textSize="22sp" />
 
     <TextView
         android:text="Story"
@@ -37,5 +37,6 @@
         android:layout_marginTop="20dp"
         android:id="@+id/ncStory"
         android:layout_below="@+id/ncSender"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textSize="20sp" />
 </RelativeLayout>

@@ -135,8 +135,8 @@ public class NewsCardAdapter extends RecyclerView.Adapter<NewsCardAdapter.Haramb
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                final FilterResults oReturn = new FilterResults();
-                final ArrayList<NewsCard> results = new ArrayList<NewsCard>();
+                FilterResults oReturn = new FilterResults();
+                ArrayList<NewsCard> results = new ArrayList<NewsCard>();
                 if (backupList == null) {
                     backupList = cardList;
                     if (constraint != null) {
