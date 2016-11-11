@@ -22,11 +22,12 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
+import android.support.v7.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -44,14 +45,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Activity class
-public class NewsActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class NewsActivity extends AppCompatActivity {
 
     // Instance variables
     //private EditText searchBox;
     //private Button searchButton;
     private RecyclerView recyclerView;
     private SearchView searchView;
-    private NewsCardAdapter mainAdapter;
+    private NewsAdapter adapter;
     //private NewsCardAdapter displayAdapter;
     //private NewsCardAdapter searchAdapter;
     private ArrayList<NewsCard> cardList;
@@ -63,13 +64,31 @@ public class NewsActivity extends AppCompatActivity implements SearchView.OnQuer
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
+        searchView = (SearchView) findViewById(R.id.searchBar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        cardList = processCards();
+        //formatCards();
+        adapter = new NewsAdapter(this, cardList);
+        recyclerView.setAdapter(adapter);
+        /*
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+        });*/
         //searchBox = (EditText) findViewById(R.id.searchBar);
         //searchButton = (Button) findViewById(R.id.searchButton);
-        cardList = new ArrayList<>();
-        mainAdapter = new NewsCardAdapter(this, cardList);
-        processCards();
+        //..cardList = new ArrayList<>();
+        //mainAdapter = new NewsCardAdapter(this, cardList);
+        //processCards();
         //displayList = cardList;
         //searchList = cardList;
         //displayAdapter = new NewsCardAdapter(this, displayList);
@@ -93,34 +112,17 @@ public class NewsActivity extends AppCompatActivity implements SearchView.OnQuer
 
         //searchList
 
-        RecyclerView.LayoutManager harambeLayoutManager = new GridLayoutManager(this, 1);
-        recyclerView.setLayoutManager(harambeLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mainAdapter);
+        //RecyclerView.LayoutManager harambeLayoutManager = new GridLayoutManager(this, 1);
+        //recyclerView.setLayoutManager(harambeLayoutManager);
+        //recyclerView.setItemAnimator(new DefaultItemAnimator());
+        //recyclerView.setAdapter(mainAdapter);
         //searchListView.setAdapter(mainAdapter);
-
-        formatCards();
     }
 
-
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        if (TextUtils.isEmpty(newText)) {
-            mainAdapter.getFilter().filter("");
-        }
-        else {
-            mainAdapter.getFilter().filter(newText.toString());
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return true;
-    }
 
     // Add cards (now they are just test cards)
-    private void processCards() {
+    private ArrayList<NewsCard> processCards() {
+        ArrayList<NewsCard> cardList = new ArrayList<>();
         NewsCard card = new NewsCard("Breaking News", "provost@calvin.edu", "Calvin strikes oil", 0, 1);
         cardList.add(card);
 
@@ -136,8 +138,9 @@ public class NewsActivity extends AppCompatActivity implements SearchView.OnQuer
         card = new NewsCard("Philosophy Faculty Book Reception", "NULL", "The Philosophy Department at Calvin College would like to invite you to attend our Faculty Book Reception, Thursday, October 20, from 3:30 to 5:30 PM\nThe reception will offer students, staff, and faculty the opportunity to hear a short presentation by each of our faculty members on their recent publications.", 0, 1);
         cardList.add(card);
 
-        mainAdapter.notifyDataSetChanged();
+        return cardList;
     }
+    
 /*
     public void searchCards(String query) {
         searchList.clear();
@@ -154,34 +157,31 @@ public class NewsActivity extends AppCompatActivity implements SearchView.OnQuer
         searchAdapter.notifyDataSetChanged();
     }*/
 
-    public void formatCards() {
-        for (int i = 0; i < cardList.size(); i++) {
-            NewsCard currentCard = cardList.get(i);
-            if (currentCard.getSender().equals("provost@calvin.edu")) {
-                currentCard.setColor(1);
-            }
-            else if (currentCard.getSender().equals("random@calvin.edu")) {
-                currentCard.setColor(2);
-            }
-            else if (currentCard.getSender().equals("NULL")) {
-                currentCard.setColor(3);
-            }
-            else if (currentCard.getSender().equals("email")) {
-                currentCard.setColor(4);
-            }
-        }
-        mainAdapter.notifyDataSetChanged();
-    }
+
+
+
 
     // Create the options menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchActionBarItem = menu.findItem(R.id.searchActionBarItem);
-        searchView = (SearchView) MenuItemCompat.getActionView(searchActionBarItem);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        MenuItem searchBarItem = menu.findItem(R.id.searchBar);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchBarItem);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String query) {
+                adapter.getFilter().filter(query);
+                return false;
+            }
+        });
         return true;
     }
 

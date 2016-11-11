@@ -21,7 +21,7 @@
             android:layout_height="match_parent" />
 
         <ImageView
-            android:id="@+id/knightIcon"
+            android:id="@+id/icon"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_margin="4dp"
