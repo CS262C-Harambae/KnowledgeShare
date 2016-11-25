@@ -4,13 +4,12 @@ package edu.calvin.harambe.knowledgeshare;
  * News Card (NewsCard.java)
  * This class defines a News Card object
  *
- * @author: Corey Noble (cjn8)
- * @version: 1.0 (Fall, 2016)
+ * @version 0.4 Beta (Fall, 2016)
  */
 
 // Class
 public class NewsCard {
-    
+
     // Instance variables
     private String headline;
     private String sender;
@@ -47,10 +46,14 @@ public class NewsCard {
     }
 
     // Sender accessor
-    public String getSender() { return sender; }
+    public String getSender() {
+        return sender;
+    }
 
     // Sender mutator
-    public void setSender() { this.sender = sender; }
+    public void setSender() {
+        this.sender = sender;
+    }
 
     // Story accessor
     public String getStory() {
@@ -68,7 +71,7 @@ public class NewsCard {
     }
 
     // Color mutator
-    public void setColor(int color){
+    public void setColor(int color) {
         this.color = color;
     }
 

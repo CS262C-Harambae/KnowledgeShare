@@ -6,58 +6,45 @@ package edu.calvin.harambe.knowledgeshare;
  * This activity could be called our "main" activity,
  * as it is the platform in which the other classes fit
  *
- * @author: Corey Noble (cjn8)
- * @version: 1.0 (Fall, 2016)
+ * @version 0.4 Beta (Fall, 2016)
  */
 
-// Imports (Android)
-import android.app.Activity;
+// Imports
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.support.v7.widget.SearchView;
-import android.widget.SearchView.OnQueryTextListener;
-import android.text.TextUtils;
-import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
-// Imports (Java)
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 // Activity class
 public class NewsActivity extends AppCompatActivity {
 
     // Instance variables
-    //private EditText searchBox;
-    //private Button searchButton;
     private RecyclerView recyclerView;
     private SearchView searchView;
     private NewsAdapter adapter;
-    //private NewsCardAdapter displayAdapter;
-    //private NewsCardAdapter searchAdapter;
     private ArrayList<NewsCard> cardList;
-    //private ArrayList<NewsCard> displayList;
-    //private ArrayList<NewsCard> searchList;
 
     // Initialize activity and build the card list
     @Override
@@ -68,60 +55,105 @@ public class NewsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        cardList = processCards();
-        //formatCards();
-        adapter = new NewsAdapter(this, cardList);
-        recyclerView.setAdapter(adapter);
-        /*
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String query) {
-                adapter.getFilter().filter(query);
-                return false;
-            }
-        });*/
-        //searchBox = (EditText) findViewById(R.id.searchBar);
-        //searchButton = (Button) findViewById(R.id.searchButton);
-        //..cardList = new ArrayList<>();
-        //mainAdapter = new NewsCardAdapter(this, cardList);
-        //processCards();
-        //displayList = cardList;
-        //searchList = cardList;
-        //displayAdapter = new NewsCardAdapter(this, displayList);
-        //searchAdapter = new NewsCardAdapter(this, searchList);
-
-        //recyclerView.setAdapter(mainAdapter);
-/*
-        searchBox.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId != EditorInfo.IME_ACTION_SEND) {
-                    String query = searchBox.getText().toString();
-                    searchCards(query);
-                    return true;
-                }
-                return false;
-            }
-        });*/
-        //searchListView = (ListView) findViewById(R.id.searchListView);
-        //searchView = (SearchView) findViewById(R.id.search_view);
-
-        //searchList
-
-        //RecyclerView.LayoutManager harambeLayoutManager = new GridLayoutManager(this, 1);
-        //recyclerView.setLayoutManager(harambeLayoutManager);
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //recyclerView.setAdapter(mainAdapter);
-        //searchListView.setAdapter(mainAdapter);
+        new GetArticleTask().execute(createURL());
     }
 
+    private URL createURL() {
+        try {
+            String urlString = "http://153.106.116.67:8089/monopoly/players";
+            return new URL(urlString);
+        } catch (Exception e) {
+            Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
+        }
+        return null;
+    }
+
+    private class GetArticleTask extends AsyncTask<URL, Void, JSONArray> {
+        @Override
+        protected JSONArray doInBackground(URL... params) {
+            HttpURLConnection connection = null;
+            StringBuilder result = new StringBuilder();
+            try {
+                connection = (HttpURLConnection) params[0].openConnection();
+                System.out.println(connection.getResponseCode());
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    try {
+                        return new JSONArray(result.toString());
+                    } catch (JSONException je) {
+                        JSONArray jArray = new JSONArray();
+                        jArray.put(new JSONObject(result.toString()));
+                        return jArray;
+                    }
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                connection.disconnect();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray player) {
+            if (player != null) {
+                convertJSONtoArrayList(player);
+                NewsActivity.this.updateDisplay();
+            } else {
+                Toast.makeText(NewsActivity.this, "NOPE", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void convertJSONtoArrayList(JSONArray players) {
+        cardList = new ArrayList<NewsCard>(); // clear old player data
+        try {
+            for (int i = 0; i < players.length(); i++) {
+                JSONObject currentPlayer = players.getJSONObject(i);
+                cardList.add(new NewsCard(
+                        currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
+                        currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
+                        currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
+                        1, 1));
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateDisplay() {
+        if (cardList == null) {
+            Toast.makeText(NewsActivity.this, "FAILURE", Toast.LENGTH_SHORT).show();
+        }
+        ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+        for (NewsCard item : cardList) {
+            HashMap<String, String> map = new HashMap<String, String>();
+            map.put("subject", item.getHeadline());
+            map.put("sender", item.getSender());
+            map.put("body", item.getStory());
+            map.put("color", Integer.toString(item.getColor()));
+            map.put("category", Integer.toString(item.getCategory()));
+            data.add(map);
+        }
+
+        int resource = R.layout.news_card;
+        String[] from = {"subject", "sender", "body"};
+        int[] to = {R.id.headline, R.id.sender, R.id.story};
+        adapter = new NewsAdapter(this, cardList);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
 
     // Add cards (now they are just test cards)
-    private ArrayList<NewsCard> processCards() {
+    private ArrayList<NewsCard> testCards() {
         ArrayList<NewsCard> cardList = new ArrayList<>();
         NewsCard card = new NewsCard("Breaking News", "provost@calvin.edu", "Calvin strikes oil", 0, 1);
         cardList.add(card);
@@ -140,26 +172,6 @@ public class NewsActivity extends AppCompatActivity {
 
         return cardList;
     }
-    
-/*
-    public void searchCards(String query) {
-        searchList.clear();
-        for (int i = 0; i < displayList.size(); i++) {
-            if (displayList.get(i).getHeadline().contains(query)) {
-                searchList.add(displayList.get(i));
-            } else if (displayList.get(i).getSender().contains(query)) {
-                searchList.add(displayList.get(i));
-            } else if (displayList.get(i).getStory().contains(query)) {
-                searchList.add(displayList.get(i));
-            }
-        }
-        recyclerView.setAdapter(searchAdapter);
-        searchAdapter.notifyDataSetChanged();
-    }*/
-
-
-
-
 
     // Create the options menu
     @Override
@@ -168,7 +180,6 @@ public class NewsActivity extends AppCompatActivity {
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         MenuItem searchBarItem = menu.findItem(R.id.searchBar);
         searchView = (SearchView) MenuItemCompat.getActionView(searchBarItem);
-        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setIconifiedByDefault(true);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -176,6 +187,7 @@ public class NewsActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String query) {
                 adapter.getFilter().filter(query);
@@ -191,9 +203,6 @@ public class NewsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.aboutActivity:
                 startActivity(new Intent(NewsActivity.this, AboutActivity.class));
-                return true;
-            case R.id.harambeActivity:
-                startActivity(new Intent(NewsActivity.this, HarambeActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
