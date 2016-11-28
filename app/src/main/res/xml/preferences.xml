@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <CheckBoxPreference android:key="administrationPreference"
+        android:title="Administration"
+        android:summary="Emails from Pres. Leroy, the Provost, etc."
+        android:defaultValue="true" />
+    <CheckBoxPreference android:key="careerDevelopmentPreference"
+        android:title="Career Development"
+        android:summary="Emails involving internships and jobs"
+        android:defaultValue="true" />
+    <CheckBoxPreference android:key="danceGuildPreference"
+        android:title="Dance Guild"
+        android:summary="A myriad of dance guild emails"
+        android:defaultValue="false" />
+    <CheckBoxPreference android:key="campusMinistriesPreference"
+        android:title="Campus Ministries"
+        android:summary="Emails about LOFT, Bible Study, etc."
+        android:defaultValue="true" />
+</PreferenceScreen>

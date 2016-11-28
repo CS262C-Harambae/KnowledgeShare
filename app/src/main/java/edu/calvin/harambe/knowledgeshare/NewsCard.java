@@ -16,23 +16,20 @@ public class NewsCard {
     private String story;
     private int color;
     private int category;
+    private String date;
 
     // Default constructor
     public NewsCard() {
-        this.headline = "Sample Headline";
-        this.sender = "cjn8@students.calvin.edu";
-        this.story = "Sample Story";
-        this.color = 1;
-        this.category = 1;
     }
 
     // Explicit constructor
-    public NewsCard(String headline, String sender, String story, int color, int category) {
+    public NewsCard(String headline, String sender, String story, int color, int category, String date) {
         this.headline = headline;
         this.sender = sender;
         this.story = story;
         this.color = color;
         this.category = category;
+        this.date = date;
     }
 
     // Headline accessor
@@ -83,5 +80,13 @@ public class NewsCard {
     // Category mutator
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

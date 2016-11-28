@@ -1,5 +1,12 @@
 package edu.calvin.harambe.knowledgeshare;
 
+/**
+ * News Adapter (NewsAdapter.java)
+ * This adapter sets up the RecyclerView layout for our cards
+ *
+ * @version: 1.0 (Fall, 2016)
+ */
+
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +18,6 @@ import android.widget.Filterable;
 
 import java.util.ArrayList;
 
-/**
- * Created by cjn8 on 11/9/2016.
- */
-
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Filterable {
     Context context;
     ArrayList<NewsCard> fullList, searchedList;
@@ -23,7 +26,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         this.context = c;
         this.fullList = l;
         this.searchedList = l;
-        formatCards();
+        //formatCards();
     }
     public void formatCards() {
         for (int i = 0; i < fullList.size(); i++) {
@@ -55,6 +58,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         h.headline.setText(card.getHeadline());
         h.sender.setText(card.getSender());
         h.story.setText(card.getStory());
+        String subDate = card.getDate();
+        subDate = subDate.substring(0, 5);
+        h.date.setText(subDate);
         Integer colorBlack = 0;
         Integer colorBlue = 1;
         Integer colorRed = 2;
@@ -73,6 +79,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         boolean isGreen = (intGreen != 1);
         Integer intYellow = Integer.compare(card.getColor(), colorYellow);
         boolean isYellow = (intYellow != 1);
+        /*
         if (isBlack) {
             h.colorBar.setBackgroundColor(Color.rgb(0, 0, 0));
         }
@@ -90,7 +97,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         }
         else if (isYellow) {
             h.colorBar.setBackgroundColor(Color.rgb(238, 242, 7));
-        }
+        }*/
     }
     @Override
     public int getItemCount() {
