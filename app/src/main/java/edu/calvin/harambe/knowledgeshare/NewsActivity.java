@@ -41,10 +41,13 @@ import org.json.JSONObject;
 public class NewsActivity extends AppCompatActivity {
 
     // Instance variables
+    //public static String constraint = "http://153.106.116.73:8089/news/articles";
     private RecyclerView recyclerView;
     private SearchView searchView;
     private NewsAdapter adapter;
     private ArrayList<NewsCard> cardList;
+    public static ArrayList<String> emailList = new ArrayList<>();
+    private ArrayList<NewsCard> tempList;
 
     // Initialize activity and build the card list
     @Override
@@ -55,12 +58,50 @@ public class NewsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        new GetArticleTask().execute(createURL());
+        cardList = testCards();
+        tempList = testCards();
+        adapter = new NewsAdapter(this, cardList);
+        recyclerView.setAdapter(adapter);
+
+        adapter.notifyDataSetChanged();
+        //new GetArticleTask().execute(createURL());
     }
 
-    private URL createURL() {
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        //cardList = tempList;
+        //adapter.notifyDataSetChanged();
+        filterByCategory();
+        emailList.clear();
+    }
+
+    public void filterByCategory() {
+        cardList.clear();
+        for (int i = 0; i < tempList.size(); i++) {
+            cardList.add(tempList.get(i));
+        }
+
+        if (cardList.size() > 0 && emailList.size() > 0) {
+            for (int i = 0; i < cardList.size(); i++) {
+                for (int j = 0; j < emailList.size(); j++) {
+                    if (cardList.get(i).getSender().equals(emailList.get(j))) {
+                        cardList.remove(i);
+                        i = 0;
+                        j = 0;
+                    }
+                }
+            }
+            //adapter.notifyDataSetChanged();
+        }
+        adapter.notifyDataSetChanged();
+        //cardList = tempList;
+    }
+
+    public URL createURL() {
         try {
-            String urlString = "http://153.106.116.67:8089/monopoly/players";
+            String urlString = "http://153.106.116.93:8089/news/articles";
             return new URL(urlString);
         } catch (Exception e) {
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
@@ -68,7 +109,7 @@ public class NewsActivity extends AppCompatActivity {
         return null;
     }
 
-    private class GetArticleTask extends AsyncTask<URL, Void, JSONArray> {
+    public class GetArticleTask extends AsyncTask<URL, Void, JSONArray> {
         @Override
         protected JSONArray doInBackground(URL... params) {
             HttpURLConnection connection = null;
@@ -104,7 +145,7 @@ public class NewsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONArray player) {
             if (player != null) {
-                convertJSONtoArrayList(player);
+                //convertJSONtoArrayList(player);
                 NewsActivity.this.updateDisplay();
             } else {
                 Toast.makeText(NewsActivity.this, "NOPE", Toast.LENGTH_SHORT).show();
@@ -112,8 +153,10 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
+    /*
     private void convertJSONtoArrayList(JSONArray players) {
         cardList = new ArrayList<NewsCard>(); // clear old player data
+        tempList = new ArrayList<NewsCard>();
         try {
             for (int i = 0; i < players.length(); i++) {
                 JSONObject currentPlayer = players.getJSONObject(i);
@@ -122,12 +165,16 @@ public class NewsActivity extends AppCompatActivity {
                         currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
                         currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
                         1, 1));
-
+                tempList.add(new NewsCard(
+                        currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
+                        currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
+                        currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
+                        1, 1));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     private void updateDisplay() {
         if (cardList == null) {
@@ -155,20 +202,35 @@ public class NewsActivity extends AppCompatActivity {
     // Add cards (now they are just test cards)
     private ArrayList<NewsCard> testCards() {
         ArrayList<NewsCard> cardList = new ArrayList<>();
-        NewsCard card = new NewsCard("Breaking News", "provost@calvin.edu", "Calvin strikes oil", 0, 1);
+        NewsCard card = new NewsCard("New Calvin StudentNews App", "johncalvin@calvin.edu", "There is a new app for Calvin StudentNews. Download from the Google Play Store.", 0, 1, "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("Dance Guild", "random@calvin.edu", "You can ignore this announcement", 0, 1);
+        card = new NewsCard("Career Center Closed", "kdykhouse@calvin.edu", "Calvin's Career Center will be closed on Wednesday, August 3, for a staff retreat. We apologize for any inconvenience this may cause.", 0, 1, "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("$8228/#%042734", "notReallyWorthLookingAt@calvin.edu", "Yet another poorly formatted title...", 0, 1);
+        card = new NewsCard("Pay Day for Student Employees", "payroll@calvin.edu", "It is pay day for Student employees! Please take a minute to review your electronic advice in the portal.", 0, 1, "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("FLU CLINIC - Health Services - October 20", "email", "Calvin College Health Services is hosting another flu clinic on Thursday, October 20, from 10 a.m. to 2 p.m. The initial check-in point will be located in Health Services.\nDue to its ineffectiveness, flu mist will not be available this year.  Only the flu shot will be available.", 0, 1);
+        card = new NewsCard("Spanish 301 students lead Spanish Chapel Tuesday", "zand@calvin.edu", "On Tuesday a group of Spanish 301 students will lead us in praise and will reflect with us on the theme of forgiveness. Come join us in the Commons Lecture Hall at 10:00AM.", 0, 1, "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("Philosophy Faculty Book Reception", "NULL", "The Philosophy Department at Calvin College would like to invite you to attend our Faculty Book Reception, Thursday, October 20, from 3:30 to 5:30 PM\nThe reception will offer students, staff, and faculty the opportunity to hear a short presentation by each of our faculty members on their recent publications.", 0, 1);
+        card = new NewsCard("Flu Clinic TODAY at Health Services", "health@calvin.edu", "Calvin College Health Services is hosting a final flu clinic today from 10AM to 2PM. The initial check-in point will be located in Health Services.", 0, 1, "11-21-2016");
         cardList.add(card);
+
+        //card = new NewsCard("Web Time Entry in the Portal due on Monday, Nov. 21, by 4:00PM", "payroll@calvin.edu", "Calvin strikes oil", 0, 1, "11-21-2016");
+        //cardList.add(card);
+
+        card = new NewsCard("Dance Guild", "random@calvin.edu", "You can ignore this announcement", 0, 1, "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("$8228/#%042734", "random@calvin.edu", "Yet another poorly formatted title...", 0, 1, "11-18-2016");
+        cardList.add(card);
+
+        //card = new NewsCard("FLU CLINIC - Health Services - October 20", "email", "Calvin College Health Services is hosting another flu clinic on Thursday, October 20, from 10 a.m. to 2 p.m. The initial check-in point will be located in Health Services.\nDue to its ineffectiveness, flu mist will not be available this year.  Only the flu shot will be available.", 0, 1, "11-18-2016");
+        //cardList.add(card);
+
+        //card = new NewsCard("Philosophy Faculty Book Reception", "NULL", "The Philosophy Department at Calvin College would like to invite you to attend our Faculty Book Reception, Thursday, October 20, from 3:30 to 5:30 PM\nThe reception will offer students, staff, and faculty the opportunity to hear a short presentation by each of our faculty members on their recent publications.", 0, 1, "11-18-2016");
+        //cardList.add(card);
 
         return cardList;
     }
@@ -204,6 +266,8 @@ public class NewsActivity extends AppCompatActivity {
             case R.id.aboutActivity:
                 startActivity(new Intent(NewsActivity.this, AboutActivity.class));
                 return true;
+            case R.id.categoryFragment:
+                startActivity(new Intent(NewsActivity.this, SettingsActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }

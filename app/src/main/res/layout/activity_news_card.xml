@@ -31,12 +31,22 @@
         android:textSize="22sp" />
 
     <TextView
+        android:text="Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ncDate"
+        android:layout_below="@+id/ncSender"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="12dp"
+        android:textSize="22sp" />
+
+    <TextView
         android:text="Story"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:id="@+id/ncStory"
-        android:layout_below="@+id/ncSender"
+        android:layout_below="@+id/ncDate"
         android:layout_alignParentStart="true"
         android:textSize="20sp" />
 </RelativeLayout>

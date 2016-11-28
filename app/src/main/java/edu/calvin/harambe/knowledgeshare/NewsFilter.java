@@ -1,12 +1,16 @@
 package edu.calvin.harambe.knowledgeshare;
 
+/**
+ * News Filter (NewsFilter.java)
+ * This filter extends the existing Filter class for our purposes
+ *
+ * @version: 1.0 (Fall, 2016)
+ */
+
 import android.widget.Filter;
 
 import java.util.ArrayList;
 
-/**
- * Created by cjn8 on 11/8/2016.
- */
 
 public class NewsFilter extends Filter {
     ArrayList<NewsCard> searchedList;
