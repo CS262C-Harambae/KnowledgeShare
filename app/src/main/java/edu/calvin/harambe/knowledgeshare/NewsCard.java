@@ -1,5 +1,7 @@
 package edu.calvin.harambe.knowledgeshare;
 
+import java.sql.Timestamp;
+
 /**
  * News Card (NewsCard.java)
  * This class defines a News Card object
@@ -14,8 +16,6 @@ public class NewsCard {
     private String headline;
     private String sender;
     private String story;
-    private int color;
-    private int category;
     private String date;
 
     // Default constructor
@@ -23,12 +23,10 @@ public class NewsCard {
     }
 
     // Explicit constructor
-    public NewsCard(String headline, String sender, String story, int color, int category, String date) {
+    public NewsCard(String headline, String sender, String story, String date) {
         this.headline = headline;
         this.sender = sender;
         this.story = story;
-        this.color = color;
-        this.category = category;
         this.date = date;
     }
 
@@ -62,26 +60,6 @@ public class NewsCard {
         this.story = story;
     }
 
-    // Color accessor
-    public int getColor() {
-        return color;
-    }
-
-    // Color mutator
-    public void setColor(int color) {
-        this.color = color;
-    }
-
-    // Category accessor
-    public int getCategory() {
-        return category;
-    }
-
-    // Category mutator
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
     public String getDate() {
         return date;
     }
@@ -90,3 +68,4 @@ public class NewsCard {
         this.date = date;
     }
 }
+
