@@ -1,13 +1,5 @@
 package edu.calvin.harambe.knowledgeshare;
 
-/**
- * Categories Fragment (CategoriesFragment.java)
- * This fragments provides the filtering capability
- * based on categories
- *
- * @version: 1.0 (Fall, 2016)
- */
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -15,6 +7,10 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
 import java.util.ArrayList;
+
+/**
+ * Created by cjn8 on 11/19/2016.
+ */
 
 public class CategoriesFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SharedPreferences categories;
@@ -27,12 +23,13 @@ public class CategoriesFragment extends PreferenceFragment implements SharedPref
     private boolean campusMinistries;
     private ArrayList<String> campusMinistriesList;
     private ArrayList<String> reservedList;
+    private String tempConstraint = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
-
+        this.setConstraint();
         categories = PreferenceManager.getDefaultSharedPreferences(getActivity());
     }
 
@@ -43,31 +40,40 @@ public class CategoriesFragment extends PreferenceFragment implements SharedPref
         careerDevelopment = categories.getBoolean("careerDevelopmentPreference", false);
         danceGuild = categories.getBoolean("danceGuildPreference", false);
         campusMinistries = categories.getBoolean("campusMinistriesPreference", false);
-        //populateLists();
+        populateLists();
         this.setConstraint();
         categories.registerOnSharedPreferenceChangeListener(this);
     }
 
     public void setConstraint() {
-
-        NewsActivity.emailList.clear();
+        tempConstraint = "";
+        //NewsActivity.constraint = new StringBuilder();
+        //NewsActivity.emailList.clear();
         if (administration) {
-            NewsActivity.emailList.add("president@calvin.edu");
-            NewsActivity.emailList.add("provost@calvin.edu");
-            NewsActivity.emailList.add("payroll@calvin.edu");
+            for (int i = 0; i < administrationList.size(); i++) {
+                tempConstraint.concat(administrationList.get(i));
+                tempConstraint.concat("|");
+            }
         }
         if (careerDevelopment) {
-            NewsActivity.emailList.add("career@calvin.edu");
-            NewsActivity.emailList.add("kdykhouse@calvin.edu");
+            for (int i = 0; i < careerDevelopmentList.size(); i++) {
+                tempConstraint.concat(careerDevelopmentList.get(i));
+                tempConstraint.concat("|");
+            }
         }
         categories.registerOnSharedPreferenceChangeListener(this);
-        /*
-        if (NewsActivity.constraint != "") {
-            NewsActivity.constraint = NewsActivity.constraint.substring(0, NewsActivity.constraint.length() - 1);
+
+        if (!tempConstraint.isEmpty()) {
+            tempConstraint = tempConstraint.substring(0, NewsActivity.constraint.length() - 1);
+            String beginning = "'";
+            NewsActivity.constraint.append(beginning);
+            NewsActivity.constraint.append(tempConstraint);
+            NewsActivity.constraint.append(beginning);
+            //NewsActivity.constraint = "'" + tempConstraint + "'";
         }
-        NewsActivity.constraint = "http://153.106.116.73:8089/monopoly/player/'" + NewsActivity.constraint + "'";
-        System.out.println(NewsActivity.constraint);
-        */
+        //NewsActivity.constraint = "'" + tempConstraint + "'";
+        System.out.println("Constraint: " + NewsActivity.constraint);
+
     }
 
     @Override
@@ -93,8 +99,22 @@ public class CategoriesFragment extends PreferenceFragment implements SharedPref
     }
     private void populateLists() {
         administrationList.add("president@calvin.edu");
-        administrationList.add("provost@calvin.edu");
-        administrationList.add("payroll@calvin.edu");
+        administrationList.add("brac@calvin.edu");
+        administrationList.add("svploeg@calvin.edu");
+        administrationList.add("kde2@calvin.edu");
+        administrationList.add("rjb42@calvin.edu");
+        administrationList.add("sav36@calvin.edu");
+        administrationList.add("thubers@calvin.edu");
+        administrationList.add("lopa@calvin.edu");
         careerDevelopmentList.add("career@calvin.edu");
+        careerDevelopmentList.add("kdykhous@calvin.edu");
+        careerDevelopmentList.add("tdj4@calvin.edu");
+        careerDevelopmentList.add("cbt4@calvin.edu");
+        careerDevelopmentList.add("bcok@calvin.edu");
+        careerDevelopmentList.add("lbl3@calvin.edu");
+        careerDevelopmentList.add("mec6@calvin.edu");
+        careerDevelopmentList.add("bspeyers@calvin.edu");
+        careerDevelopmentList.add("bj24@calvin.edu");
+        careerDevelopmentList.add("rwt2@calvin.edu");
     }
 }
