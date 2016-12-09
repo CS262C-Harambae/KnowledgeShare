@@ -8,10 +8,8 @@
         android:title="Search"
         myapp:actionViewClass="android.support.v7.widget.SearchView"
         myapp:showAsAction="ifRoom"/>
-    <item android:id="@+id/categories"
+    <item android:id="@+id/categoryFragment"
         android:title="Categories"/>
     <item android:id="@+id/aboutActivity"
         android:title="About"/>
-    <item android:id="@+id/harambeActivity"
-        android:title="Our Namesake"/>
 </menu>

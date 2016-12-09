@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".AboutActivity" />
         <activity android:name=".NewsCardActivity" />
+        <activity android:name=".SettingsActivity" />
     </application>
 
 </manifest>

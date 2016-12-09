@@ -23,8 +23,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         this.context = c;
         this.fullList = l;
         this.searchedList = l;
-        formatCards();
+        //formatCards();
     }
+
+    /*
     public void formatCards() {
         for (int i = 0; i < fullList.size(); i++) {
             NewsCard currentCard = fullList.get(i);
@@ -42,7 +44,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
             }
         }
         this.notifyDataSetChanged();
-    }
+    }*/
     @Override
     public NewsHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_card, null);
@@ -55,6 +57,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         h.headline.setText(card.getHeadline());
         h.sender.setText(card.getSender());
         h.story.setText(card.getStory());
+        String subDate = card.getDate();
+        subDate = subDate.substring(0, 5);
+        h.date.setText(subDate);
+    }
+        /*
         Integer colorBlack = 0;
         Integer colorBlue = 1;
         Integer colorRed = 2;
@@ -73,6 +80,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         boolean isGreen = (intGreen != 1);
         Integer intYellow = Integer.compare(card.getColor(), colorYellow);
         boolean isYellow = (intYellow != 1);
+        /*
         if (isBlack) {
             h.colorBar.setBackgroundColor(Color.rgb(0, 0, 0));
         }
@@ -90,8 +98,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         }
         else if (isYellow) {
             h.colorBar.setBackgroundColor(Color.rgb(238, 242, 7));
-        }
-    }
+        }*/
+
     @Override
     public int getItemCount() {
         return fullList.size();
