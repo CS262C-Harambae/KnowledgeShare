@@ -24,6 +24,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -45,9 +46,11 @@ public class NewsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SearchView searchView;
     private NewsAdapter adapter;
-    private ArrayList<NewsCard> cardList;
+    private ArrayList<NewsCard> cardList = new ArrayList<>();
     public static ArrayList<String> emailList = new ArrayList<>();
     private ArrayList<NewsCard> tempList;
+    public static StringBuilder constraint = new StringBuilder();
+    //public GetArticleTask articleTask = new GetArticleTask();
 
     // Initialize activity and build the card list
     @Override
@@ -58,32 +61,34 @@ public class NewsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        cardList = testCards();
-        tempList = testCards();
-        adapter = new NewsAdapter(this, cardList);
-        recyclerView.setAdapter(adapter);
+        //cardList = testCards();
+        //tempList = testCards();
 
-        adapter.notifyDataSetChanged();
-        //new GetArticleTask().execute(createURL());
+
+        //adapter.notifyDataSetChanged();
+        new GetArticleTask().execute(createURL(constraint.toString()));
     }
+
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
+        new GetArticleTask().execute(createURL(constraint.toString()));
         //cardList = tempList;
         //adapter.notifyDataSetChanged();
-        filterByCategory();
-        emailList.clear();
+        //filterByCategory();
+        //emailList.clear();
     }
 
+    /*
     public void filterByCategory() {
         cardList.clear();
         for (int i = 0; i < tempList.size(); i++) {
             cardList.add(tempList.get(i));
         }
+        int cardSize = cardList.size();
 
-        if (cardList.size() > 0 && emailList.size() > 0) {
+        if (cardList.size() > 0) {
             for (int i = 0; i < cardList.size(); i++) {
                 for (int j = 0; j < emailList.size(); j++) {
                     if (cardList.get(i).getSender().equals(emailList.get(j))) {
@@ -96,13 +101,28 @@ public class NewsActivity extends AppCompatActivity {
             //adapter.notifyDataSetChanged();
         }
         adapter.notifyDataSetChanged();
+        //emailList.clear();
         //cardList = tempList;
-    }
+    }*/
 
-    public URL createURL() {
+    public URL createURL(String constraint) {
         try {
-            String urlString = "http://153.106.116.93:8089/news/articles";
-            return new URL(urlString);
+            StringBuilder urlString = new StringBuilder();
+            //System.out.print(constraint);
+            if (constraint.length() > 0) {
+                urlString.append("http://cs262.cs.calvin.edu:8083/news/article/");
+                urlString.append(constraint);
+                //System.out.print(urlString.toString());
+            }
+            else {
+                urlString.append("http://cs262.cs.calvin.edu:8083/news/articles");
+            }
+            String muhURL = urlString.toString();
+            //System.out.print(muhURL);
+            URL myURL = new URL(muhURL);
+            System.out.print(myURL);
+            return myURL;
+            //return new URL(muhURL);
         } catch (Exception e) {
             Toast.makeText(this, "Failed", Toast.LENGTH_SHORT).show();
         }
@@ -112,11 +132,12 @@ public class NewsActivity extends AppCompatActivity {
     public class GetArticleTask extends AsyncTask<URL, Void, JSONArray> {
         @Override
         protected JSONArray doInBackground(URL... params) {
+            //System.out.print("Params: " + params[0]);
             HttpURLConnection connection = null;
             StringBuilder result = new StringBuilder();
             try {
                 connection = (HttpURLConnection) params[0].openConnection();
-                System.out.println(connection.getResponseCode());
+                //System.out.println(connection.getResponseCode());
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                     BufferedReader reader = new BufferedReader(
                             new InputStreamReader(connection.getInputStream()));
@@ -125,8 +146,10 @@ public class NewsActivity extends AppCompatActivity {
                         result.append(line);
                     }
                     try {
+                        //System.out.print("SUCCESS");
                         return new JSONArray(result.toString());
                     } catch (JSONException je) {
+                        //System.out.print("FAILURE2");
                         JSONArray jArray = new JSONArray();
                         jArray.put(new JSONObject(result.toString()));
                         return jArray;
@@ -135,6 +158,7 @@ public class NewsActivity extends AppCompatActivity {
                     throw new Exception();
                 }
             } catch (Exception e) {
+                System.out.print("FAILURE1");
                 e.printStackTrace();
             } finally {
                 connection.disconnect();
@@ -145,7 +169,7 @@ public class NewsActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(JSONArray player) {
             if (player != null) {
-                //convertJSONtoArrayList(player);
+                convertJSONtoArrayList(player);
                 NewsActivity.this.updateDisplay();
             } else {
                 Toast.makeText(NewsActivity.this, "NOPE", Toast.LENGTH_SHORT).show();
@@ -153,7 +177,7 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
-    /*
+
     private void convertJSONtoArrayList(JSONArray players) {
         cardList = new ArrayList<NewsCard>(); // clear old player data
         tempList = new ArrayList<NewsCard>();
@@ -164,17 +188,17 @@ public class NewsActivity extends AppCompatActivity {
                         currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
                         currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
                         currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
-                        1, 1));
+                        currentPlayer.has("date") ? currentPlayer.getString("date") : "No Date"));
                 tempList.add(new NewsCard(
                         currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
                         currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
                         currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
-                        1, 1));
+                        currentPlayer.has("date") ? currentPlayer.getString("date") : "No Date"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     private void updateDisplay() {
         if (cardList == null) {
@@ -186,44 +210,80 @@ public class NewsActivity extends AppCompatActivity {
             map.put("subject", item.getHeadline());
             map.put("sender", item.getSender());
             map.put("body", item.getStory());
-            map.put("color", Integer.toString(item.getColor()));
-            map.put("category", Integer.toString(item.getCategory()));
+            map.put("date", item.getDate());
             data.add(map);
         }
 
         int resource = R.layout.news_card;
-        String[] from = {"subject", "sender", "body"};
-        int[] to = {R.id.headline, R.id.sender, R.id.story};
+        String[] from = {"subject", "sender", "body", "date"};
+        int[] to = {R.id.headline, R.id.sender, R.id.story, R.id.date};
         adapter = new NewsAdapter(this, cardList);
         recyclerView.setAdapter(adapter);
+
         adapter.notifyDataSetChanged();
     }
 
     // Add cards (now they are just test cards)
     private ArrayList<NewsCard> testCards() {
         ArrayList<NewsCard> cardList = new ArrayList<>();
-        NewsCard card = new NewsCard("New Calvin StudentNews App", "johncalvin@calvin.edu", "There is a new app for Calvin StudentNews. Download from the Google Play Store.", 0, 1, "11-21-2016");
+        NewsCard card = new NewsCard("New Calvin StudentNews App", "johncalvin@calvin.edu", "There is a new app for Calvin StudentNews. Download from the Google Play Store.", "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("Career Center Closed", "kdykhouse@calvin.edu", "Calvin's Career Center will be closed on Wednesday, August 3, for a staff retreat. We apologize for any inconvenience this may cause.", 0, 1, "11-21-2016");
+        card = new NewsCard("Career Center Closed", "kdykhouse@calvin.edu", "Calvin's Career Center will be closed on Wednesday, August 3, for a staff retreat. We apologize for any inconvenience this may cause.", "11-21-2016");
         cardList.add(card);
 
-        card = new NewsCard("Pay Day for Student Employees", "payroll@calvin.edu", "It is pay day for Student employees! Please take a minute to review your electronic advice in the portal.", 0, 1, "11-21-2016");
+        card = new NewsCard("I'm Prez Leroy, son", "president@calvin.edu", "I run this place, yo.", "11-18-2016");
         cardList.add(card);
 
-        card = new NewsCard("Spanish 301 students lead Spanish Chapel Tuesday", "zand@calvin.edu", "On Tuesday a group of Spanish 301 students will lead us in praise and will reflect with us on the theme of forgiveness. Come join us in the Commons Lecture Hall at 10:00AM.", 0, 1, "11-21-2016");
+        card = new NewsCard("And I'm the Provost", "brac@calvin.edu", "My name is Cheryl Brandsen", "11-18-2016");
         cardList.add(card);
 
-        card = new NewsCard("Flu Clinic TODAY at Health Services", "health@calvin.edu", "Calvin College Health Services is hosting a final flu clinic today from 10AM to 2PM. The initial check-in point will be located in Health Services.", 0, 1, "11-21-2016");
+        card = new NewsCard("Pay Day for Student Employees", "payroll@calvin.edu", "It is pay day for Student employees! Please take a minute to review your electronic advice in the portal.", "11-21-2016");
         cardList.add(card);
 
-        //card = new NewsCard("Web Time Entry in the Portal due on Monday, Nov. 21, by 4:00PM", "payroll@calvin.edu", "Calvin strikes oil", 0, 1, "11-21-2016");
-        //cardList.add(card);
-
-        card = new NewsCard("Dance Guild", "random@calvin.edu", "You can ignore this announcement", 0, 1, "11-18-2016");
+        card = new NewsCard("Student Life Announcement", "sav36@calvin.edu", "Student life is very important to me. Thank you.",  "11-18-2016");
         cardList.add(card);
 
-        card = new NewsCard("$8228/#%042734", "random@calvin.edu", "Yet another poorly formatted title...", 0, 1, "11-18-2016");
+        card = new NewsCard("Careers are for development", "career@calvin.edu", "Get a career here!", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Spanish 301 students lead Spanish Chapel Tuesday", "zand@calvin.edu", "On Tuesday a group of Spanish 301 students will lead us in praise and will reflect with us on the theme of forgiveness. Come join us in the Commons Lecture Hall at 10:00AM.", "11-21-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Flu Clinic TODAY at Health Services", "health@calvin.edu", "Calvin College Health Services is hosting a final flu clinic today from 10AM to 2PM. The initial check-in point will be located in Health Services.", "11-21-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Web Time Entry in the Portal due on Monday, Nov. 21, by 4:00PM", "payroll@calvin.edu", "Calvin strikes oil", "11-21-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Career Development fair", "mec6@calvin.edu", "Come to this fair.", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Dance Guild", "slp33@students.calvin.edu", "Join Dance Guild! Come on, please?", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Dance Guild", "slp33@students.calvin.edu", "COME ON!!!!", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Dance Guild", "slp33@students.calvin.edu", "It's fun, I promise!", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Dance Guild", "slp33@students.calvin.edu", "NO! WE'RE LOW ON PERFORMERS!", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("O Lord My God", "campusministries@calvin.edu", "How Great Thou Art", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("When I in awesome wonder", "stobja@calvin.edu", "How Great Thou Art", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("Consider all", "mwp4@calvin.edu", "How Great Thou Art", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("The Worlds thy hands have made", "pastormary@calvin.edu", "How Great Thou Art", "11-18-2016");
+        cardList.add(card);
+
+        card = new NewsCard("$8228/#%042734", "random@calvin.edu", "Yet another poorly formatted title...", "11-18-2016");
         cardList.add(card);
 
         //card = new NewsCard("FLU CLINIC - Health Services - October 20", "email", "Calvin College Health Services is hosting another flu clinic on Thursday, October 20, from 10 a.m. to 2 p.m. The initial check-in point will be located in Health Services.\nDue to its ineffectiveness, flu mist will not be available this year.  Only the flu shot will be available.", 0, 1, "11-18-2016");
@@ -267,6 +327,7 @@ public class NewsActivity extends AppCompatActivity {
                 startActivity(new Intent(NewsActivity.this, AboutActivity.class));
                 return true;
             case R.id.categoryFragment:
+                //getFragmentManager().beginTransaction().replace(android.R.id.content, new CategoriesFragment()).commit();
                 startActivity(new Intent(NewsActivity.this, SettingsActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
