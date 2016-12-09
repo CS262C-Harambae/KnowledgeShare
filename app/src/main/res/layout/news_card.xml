@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="fill_parent"
     android:layout_height="86dp"
-    android:weightSum="1">
+    android:weightSum="1"
+    card_view:cardElevation="1dp"
+    card_view:cardCornerRadius="3dp"
+    card_view:cardUseCompatPadding="true"
+    card_view:cardBackgroundColor="@color/cardColor">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -65,4 +69,4 @@
         android:layout_width="match_parent"
         android:layout_height="10dp" />
 
-</LinearLayout>
+</android.support.v7.widget.CardView>

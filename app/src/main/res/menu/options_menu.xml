@@ -12,6 +12,4 @@
         android:title="Categories"/>
     <item android:id="@+id/aboutActivity"
         android:title="About"/>
-    <item android:id="@+id/harambeActivity"
-        android:title="Our Namesake"/>
 </menu>
