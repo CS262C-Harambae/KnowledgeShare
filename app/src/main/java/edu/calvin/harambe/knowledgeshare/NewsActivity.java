@@ -216,7 +216,7 @@ public class NewsActivity extends AppCompatActivity {
 
         int resource = R.layout.news_card;
         String[] from = {"subject", "sender", "body", "date"};
-        int[] to = {R.id.headline, R.id.sender, R.id.story, R.id.date};
+        int[] to = {R.id.headline, R.id.sender, R.id.story, R.id.dateDay};
         adapter = new NewsAdapter(this, cardList);
         recyclerView.setAdapter(adapter);
 
@@ -326,9 +326,13 @@ public class NewsActivity extends AppCompatActivity {
             case R.id.aboutActivity:
                 startActivity(new Intent(NewsActivity.this, AboutActivity.class));
                 return true;
+            case R.id.helpActivity:
+                startActivity(new Intent(NewsActivity.this, HelpActivity.class));
+                return true;
             case R.id.categoryFragment:
                 //getFragmentManager().beginTransaction().replace(android.R.id.content, new CategoriesFragment()).commit();
                 startActivity(new Intent(NewsActivity.this, SettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

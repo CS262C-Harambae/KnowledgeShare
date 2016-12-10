@@ -25,6 +25,7 @@
                 android:resource="@xml/searchable"/>
         </activity>
         <activity android:name=".AboutActivity" />
+        <activity android:name=".HelpActivity" />
         <activity android:name=".NewsCardActivity" />
         <activity android:name=".SettingsActivity" />
     </application>

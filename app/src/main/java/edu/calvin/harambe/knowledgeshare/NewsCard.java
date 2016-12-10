@@ -68,3 +68,4 @@ public class NewsCard {
         this.date = date;
     }
 }
+

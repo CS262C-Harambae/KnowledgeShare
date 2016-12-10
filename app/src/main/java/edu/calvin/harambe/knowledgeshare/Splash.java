@@ -1,5 +1,12 @@
 package edu.calvin.harambe.knowledgeshare;
 
+/**
+ * Splash Screen (Splash.java)
+ * This class provides the workings for the Splash Screen
+ *
+ * @version: 1.0 (Fall, 2016)
+ */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
