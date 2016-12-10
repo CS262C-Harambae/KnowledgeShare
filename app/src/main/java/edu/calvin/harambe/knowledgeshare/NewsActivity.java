@@ -326,9 +326,13 @@ public class NewsActivity extends AppCompatActivity {
             case R.id.aboutActivity:
                 startActivity(new Intent(NewsActivity.this, AboutActivity.class));
                 return true;
+            case R.id.helpActivity:
+                startActivity(new Intent(NewsActivity.this, HelpActivity.class));
+                return true;
             case R.id.categoryFragment:
                 //getFragmentManager().beginTransaction().replace(android.R.id.content, new CategoriesFragment()).commit();
                 startActivity(new Intent(NewsActivity.this, SettingsActivity.class));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

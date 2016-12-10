@@ -10,6 +10,8 @@
         myapp:showAsAction="ifRoom"/>
     <item android:id="@+id/categoryFragment"
         android:title="Categories"/>
+    <item android:id="@+id/helpActivity"
+        android:title="Help"/>
     <item android:id="@+id/aboutActivity"
         android:title="About"/>
 </menu>
