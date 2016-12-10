@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/settingsHeading"
+    android:text="Category Filters"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="5dp"
+    android:textSize="25dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/administrationCheck"
+        android:text="Administration"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp" />
+
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/campusMinistriesCheck"
+        android:text="Campus Ministries"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/careerDevelopmentCheck"
+        android:text="Career Development"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/danceGuildCheck"
+        android:text="Dance Guild"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/humanResourcesCheck"
+        android:text="Human Resources"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/bookstoreCheck"
+        android:text="Bookstore"
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button"
+        android:text="Apply Filters"
+        android:onClick="applyFilters"/>
+    </LinearLayout>
+</LinearLayout>

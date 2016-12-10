@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
+        android:textStyle="normal|bold"
         android:id="@+id/ncHeadline"
         android:textSize="24sp" />
 
@@ -24,11 +25,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ncSender"
-        android:textStyle="normal|bold"
         android:layout_below="@+id/ncHeadline"
         android:layout_alignParentStart="true"
         android:layout_marginTop="12dp"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:text="Date"
@@ -38,7 +38,7 @@
         android:layout_below="@+id/ncSender"
         android:layout_alignParentStart="true"
         android:layout_marginTop="12dp"
-        android:textSize="22sp" />
+        android:textSize="20sp" />
 
     <TextView
         android:text="Story"

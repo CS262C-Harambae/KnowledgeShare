@@ -1,5 +1,12 @@
 package edu.calvin.harambe.knowledgeshare;
 
+/**
+ * News Card Activity (NewsCardActivity.java)
+ * This class provides a simple activity for viewing a full card
+ *
+ * @version: 1.0 (Fall, 2016)
+ */
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -23,6 +30,7 @@ public class NewsCardActivity extends AppCompatActivity {
         headline.setText(passedInfo.getString("headlinePass"));
         sender.setText(passedInfo.getString("senderPass"));
         story.setText(passedInfo.getString("storyPass"));
-        date.setText(passedInfo.getString("datePass"));
+        String dateString = passedInfo.getString("dateMonthPass") + " " + passedInfo.getString("dateDayPass");
+        date.setText(dateString);
     }
 }
