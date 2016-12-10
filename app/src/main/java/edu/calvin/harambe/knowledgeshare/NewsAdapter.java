@@ -12,7 +12,12 @@ import android.widget.Filterable;
 import java.util.ArrayList;
 
 /**
- * Created by cjn8 on 11/9/2016.
+ * News Adapter (NewsAdapter.java)
+ * This adapter creates a Filterable RecyclerView
+ * It also formats the information that is displayed
+ * on the cards
+ *
+ * @version 1.0
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Filterable {
@@ -58,8 +63,50 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsHolder> implements Fil
         h.sender.setText(card.getSender());
         h.story.setText(card.getStory());
         String subDate = card.getDate();
-        subDate = subDate.substring(0, 5);
-        h.date.setText(subDate);
+        subDate = subDate.substring(5, 10);
+        String day = subDate.substring(3, 5);
+        String month = subDate.substring(0, 2);
+        if (month.equals("01")) {
+            month = "January";
+        }
+        else if (month.equals("02")) {
+            month = "February";
+        }
+        else if (month.equals("03")) {
+            month = "March";
+        }
+        else if (month.equals("04")) {
+            month = "April";
+        }
+        else if (month.equals("05")) {
+            month = "May";
+        }
+        else if (month.equals("06")) {
+            month = "June";
+        }
+        else if (month.equals("07")) {
+            month = "July";
+        }
+        else if (month.equals("08")) {
+            month = "August";
+        }
+        else if (month.equals("09")) {
+            month = "September";
+        }
+        else if (month.equals("10")) {
+            month = "October";
+        }
+        else if (month.equals("11")) {
+            month = "November";
+        }
+        else if (month.equals("12")) {
+            month = "December";
+        }
+        h.dateMonth.setText(month);
+        if (day.substring(0, 1).equals("0")) {
+            day = day.substring(1, 2);
+        }
+        h.dateDay.setText(day);
     }
         /*
         Integer colorBlack = 0;

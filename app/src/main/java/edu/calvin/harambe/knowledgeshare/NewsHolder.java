@@ -19,7 +19,8 @@ public class NewsHolder extends RecyclerView.ViewHolder {
     TextView headline;
     TextView sender;
     TextView story;
-    TextView date;
+    TextView dateMonth;
+    TextView dateDay;
     public NewsHolder(View v) {
         super(v);
         //this.colorBar = (ImageView) v.findViewById(R.id.colorBar);
@@ -27,7 +28,8 @@ public class NewsHolder extends RecyclerView.ViewHolder {
         this.headline = (TextView) v.findViewById(R.id.headline);
         this.sender = (TextView) v.findViewById(R.id.sender);
         this.story = (TextView) v.findViewById(R.id.story);
-        this.date = (TextView) v.findViewById(R.id.date);
+        this.dateMonth = (TextView) v.findViewById(R.id.dateMonth);
+        this.dateDay = (TextView) v.findViewById(R.id.dateDay);
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -35,7 +37,8 @@ public class NewsHolder extends RecyclerView.ViewHolder {
                 intent.putExtra("headlinePass", headline.getText().toString());
                 intent.putExtra("senderPass", sender.getText().toString());
                 intent.putExtra("storyPass", story.getText().toString());
-                intent.putExtra("datePass", date.getText().toString());
+                intent.putExtra("dateMonthPass", dateMonth.getText().toString());
+                intent.putExtra("dateDayPass", dateDay.getText().toString());
                 v.getContext().startActivity(intent);
             }
         });

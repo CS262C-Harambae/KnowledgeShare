@@ -9,15 +9,16 @@
         android:id="@+id/settingsHeading"
         android:text="Category Filters"
         android:layout_gravity="center_horizontal"
-        android:textSize="20dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="5dp"
+        android:textSize="20dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/administrationCheck"
         android:text="Administration"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="10dp" />
 
 
     <CheckBox
@@ -25,33 +26,51 @@
         android:layout_height="wrap_content"
         android:id="@+id/campusMinistriesCheck"
         android:text="Campus Ministries"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/careerDevelopmentCheck"
         android:text="Career Development"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/danceGuildCheck"
         android:text="Dance Guild"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/humanResourcesCheck"
         android:text="Human Resources"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
 
     <CheckBox
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bookstoreCheck"
         android:text="Bookstore"
-        android:onClick="selectItem" />
+        android:textSize="20dp"
+        android:layout_marginTop="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center|bottom">
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:id="@+id/button"
+        android:text="Apply Filters"
+        android:onClick="applyFilters"/>
+    </LinearLayout>
 </LinearLayout>

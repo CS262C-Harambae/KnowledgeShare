@@ -30,6 +30,7 @@ public class NewsCardActivity extends AppCompatActivity {
         headline.setText(passedInfo.getString("headlinePass"));
         sender.setText(passedInfo.getString("senderPass"));
         story.setText(passedInfo.getString("storyPass"));
-        date.setText(passedInfo.getString("datePass"));
+        String dateString = passedInfo.getString("dateMonthPass") + " " + passedInfo.getString("dateDayPass");
+        date.setText(dateString);
     }
 }
