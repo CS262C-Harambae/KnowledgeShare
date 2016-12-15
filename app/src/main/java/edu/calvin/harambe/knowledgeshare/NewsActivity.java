@@ -61,11 +61,6 @@ public class NewsActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        //cardList = testCards();
-        //tempList = testCards();
-
-
-        //adapter.notifyDataSetChanged();
         new GetArticleTask().execute(createURL(constraint.toString()));
     }
 
@@ -74,36 +69,7 @@ public class NewsActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         new GetArticleTask().execute(createURL(constraint.toString()));
-        //cardList = tempList;
-        //adapter.notifyDataSetChanged();
-        //filterByCategory();
-        //emailList.clear();
     }
-
-    /*
-    public void filterByCategory() {
-        cardList.clear();
-        for (int i = 0; i < tempList.size(); i++) {
-            cardList.add(tempList.get(i));
-        }
-        int cardSize = cardList.size();
-
-        if (cardList.size() > 0) {
-            for (int i = 0; i < cardList.size(); i++) {
-                for (int j = 0; j < emailList.size(); j++) {
-                    if (cardList.get(i).getSender().equals(emailList.get(j))) {
-                        cardList.remove(i);
-                        i = 0;
-                        j = 0;
-                    }
-                }
-            }
-            //adapter.notifyDataSetChanged();
-        }
-        adapter.notifyDataSetChanged();
-        //emailList.clear();
-        //cardList = tempList;
-    }*/
 
     public URL createURL(String constraint) {
         try {
@@ -167,9 +133,9 @@ public class NewsActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(JSONArray player) {
-            if (player != null) {
-                convertJSONtoArrayList(player);
+        protected void onPostExecute(JSONArray article) {
+            if (article != null) {
+                convertJSONtoArrayList(article);
                 NewsActivity.this.updateDisplay();
             } else {
                 Toast.makeText(NewsActivity.this, "NOPE", Toast.LENGTH_SHORT).show();
@@ -178,22 +144,22 @@ public class NewsActivity extends AppCompatActivity {
     }
 
 
-    private void convertJSONtoArrayList(JSONArray players) {
+    private void convertJSONtoArrayList(JSONArray articles) {
         cardList = new ArrayList<NewsCard>(); // clear old player data
         tempList = new ArrayList<NewsCard>();
         try {
-            for (int i = 0; i < players.length(); i++) {
-                JSONObject currentPlayer = players.getJSONObject(i);
+            for (int i = 0; i < articles.length(); i++) {
+                JSONObject currentArticle = articles.getJSONObject(i);
                 cardList.add(new NewsCard(
-                        currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
-                        currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
-                        currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
-                        currentPlayer.has("date") ? currentPlayer.getString("date") : "No Date"));
+                        currentArticle.has("subject") ? currentArticle.getString("subject") : "No Headline",
+                        currentArticle.has("sender") ? currentArticle.getString("sender") : "No Name",
+                        currentArticle.has("body") ? currentArticle.getString("body") : "No Story",
+                        currentArticle.has("date") ? currentArticle.getString("date") : "No Date"));
                 tempList.add(new NewsCard(
-                        currentPlayer.has("subject") ? currentPlayer.getString("subject") : "No Headline",
-                        currentPlayer.has("sender") ? currentPlayer.getString("sender") : "No Name",
-                        currentPlayer.has("body") ? currentPlayer.getString("body") : "No Story",
-                        currentPlayer.has("date") ? currentPlayer.getString("date") : "No Date"));
+                        currentArticle.has("subject") ? currentArticle.getString("subject") : "No Headline",
+                        currentArticle.has("sender") ? currentArticle.getString("sender") : "No Name",
+                        currentArticle.has("body") ? currentArticle.getString("body") : "No Story",
+                        currentArticle.has("date") ? currentArticle.getString("date") : "No Date"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -330,7 +296,6 @@ public class NewsActivity extends AppCompatActivity {
                 startActivity(new Intent(NewsActivity.this, HelpActivity.class));
                 return true;
             case R.id.categoryFragment:
-                //getFragmentManager().beginTransaction().replace(android.R.id.content, new CategoriesFragment()).commit();
                 startActivity(new Intent(NewsActivity.this, SettingsActivity.class));
                 return true;
             default:
