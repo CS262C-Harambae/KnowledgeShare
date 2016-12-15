@@ -4,7 +4,7 @@ package edu.calvin.harambe.knowledgeshare;
  * About Activity (AboutActivity.java)
  * This class provides the workings for the About Activity
  *
- * @version: 1.0 (Fall, 2016)
+ * @version: 1.0.1 (Fall, 2016)
  */
 
 // Imports
