@@ -19,6 +19,14 @@ public class NewsFilter extends Filter {
         this.searchedList = l;
         this.adapter = a;
     }
+    
+    /**
+     * performFiltering
+     * This method searches for the query
+     *
+     * @return results, FilterResults
+     * @param query, a CharSequence
+     */
     @Override
     protected FilterResults performFiltering(CharSequence query) {
         FilterResults results = new FilterResults();
@@ -45,6 +53,13 @@ public class NewsFilter extends Filter {
         }
         return results;
     }
+    
+    /**
+     * publishResults
+     * This method sets the new search
+     *
+     * @param query, a CharSequence; results, FilterResults
+     */
     @Override
     protected void publishResults(CharSequence query, FilterResults results) {
         adapter.fullList = (ArrayList<NewsCard>) results.values;
