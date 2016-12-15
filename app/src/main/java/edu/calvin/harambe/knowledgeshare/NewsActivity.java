@@ -6,7 +6,7 @@ package edu.calvin.harambe.knowledgeshare;
  * This activity could be called our "main" activity,
  * as it is the platform in which the other classes fit
  *
- * @version 0.4 Beta (Fall, 2016)
+ * @version 1.0.1 (Fall, 2016)
  */
 
 // Imports
@@ -52,7 +52,10 @@ public class NewsActivity extends AppCompatActivity {
     public static StringBuilder constraint = new StringBuilder();
     //public GetArticleTask articleTask = new GetArticleTask();
 
-    // Initialize activity and build the card list
+    /**
+     * onCreate
+     * This method creates the view for the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,13 +67,23 @@ public class NewsActivity extends AppCompatActivity {
         new GetArticleTask().execute(createURL(constraint.toString()));
     }
 
-
+    /**
+     * onRestart
+     * This method re-executes the tasks every time the activity is started
+     */
     @Override
     protected void onRestart() {
         super.onRestart();
         new GetArticleTask().execute(createURL(constraint.toString()));
     }
 
+    /**
+     * createURL
+     * This method creates a URL for our JSON uses
+     *
+     * @return URL a url that connects to our server
+     * @param constraint a String
+     */
     public URL createURL(String constraint) {
         try {
             StringBuilder urlString = new StringBuilder();
@@ -94,8 +107,20 @@ public class NewsActivity extends AppCompatActivity {
         }
         return null;
     }
-
+    
+    /**
+     * getArticleTask
+     * This class creates an article task
+     */
     public class GetArticleTask extends AsyncTask<URL, Void, JSONArray> {
+        
+        /**
+         * doInBackground
+         * This method reads the JSON data
+         *
+         * @return JSONArray, the JSON array of data
+         * @param URL... params, the url to read
+         */
         @Override
         protected JSONArray doInBackground(URL... params) {
             //System.out.print("Params: " + params[0]);
@@ -132,6 +157,12 @@ public class NewsActivity extends AppCompatActivity {
             return null;
         }
 
+       /**
+        * onPostExecute
+        * This method converts the JSON to an array and updates the display
+        *
+        * @param article, a JSONArray
+        */
         @Override
         protected void onPostExecute(JSONArray article) {
             if (article != null) {
@@ -143,7 +174,12 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * convertJSONtoArrayList
+     * This method converts the JSON to an array list
+     *
+     * @param articles, a JSONArray
+     */
     private void convertJSONtoArrayList(JSONArray articles) {
         cardList = new ArrayList<NewsCard>(); // clear old player data
         tempList = new ArrayList<NewsCard>();
@@ -166,6 +202,10 @@ public class NewsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * updateDisplay
+     * This method updates the display of the activity
+     */
     private void updateDisplay() {
         if (cardList == null) {
             Toast.makeText(NewsActivity.this, "FAILURE", Toast.LENGTH_SHORT).show();
@@ -261,7 +301,13 @@ public class NewsActivity extends AppCompatActivity {
         return cardList;
     }
 
-    // Create the options menu
+    /**
+     * onCreateOptionsMenu
+     * This method creates the options menu for the activity
+     *
+     * @return boolean
+     * @param menu, a Menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.options_menu, menu);
@@ -285,7 +331,13 @@ public class NewsActivity extends AppCompatActivity {
         return true;
     }
 
-    // Go to different activity if selected from the options menu
+    /**
+     * onOptionsItemSelected
+     * This method switches between activities
+     *
+     * @return boolean
+     * @param item, a MenuItem
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
