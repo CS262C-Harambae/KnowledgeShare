@@ -18,6 +18,10 @@ public class NewsCardActivity extends AppCompatActivity {
     private TextView story;
     private TextView date;
 
+    /**
+     * onCreate
+     * This method creates the view for the activity
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
