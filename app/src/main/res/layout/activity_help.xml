@@ -30,7 +30,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="KnowledgeShare searches through the titles, authors, and content of existing news items for specific keywords typed in by the user."
+        android:text="KnowledgeShare searches through the titles, authors, and content of existing news items for specific keywords that you type in."
         android:id="@+id/searchNewsfeedInfoLabel"
         android:layout_below="@+id/searchNewsfeedLabel"
         android:layout_marginTop="8dp"
@@ -63,7 +63,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="KnowledgeShare has filters that allow users to add/remove news articles according to what they want to see in their newsfeed."
+        android:text="KnowledgeShare has filters that allow you to add/remove news articles according to what you want to see in your newsfeed."
         android:id="@+id/customizeNewsfeedInfoLabel"
         android:layout_below="@+id/customizeNewsfeedLabel"
         android:layout_marginTop="8dp"
@@ -119,7 +119,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="4 Click 'Apply Filters'."
+        android:text="4. Click 'Apply Filters'."
         android:id="@+id/customizeNewsfeedStep4Label"
         android:layout_below="@+id/customizeNewsfeedStep3Label"
         android:layout_marginTop="8dp"
