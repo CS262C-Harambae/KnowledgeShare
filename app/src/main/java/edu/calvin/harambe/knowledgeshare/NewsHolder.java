@@ -14,17 +14,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NewsHolder extends RecyclerView.ViewHolder {
-    //ImageView colorBar;
-    //ImageView icon;
     TextView headline;
     TextView sender;
     TextView story;
     TextView dateMonth;
     TextView dateDay;
+    
+    /**
+     * NewsHolder
+     * This class creates a holder for the information to send it to the news card activity
+     *
+     * @param v, a View
+     */
     public NewsHolder(View v) {
         super(v);
-        //this.colorBar = (ImageView) v.findViewById(R.id.colorBar);
-        //this.icon = (ImageView) v.findViewById(R.id.icon);
         this.headline = (TextView) v.findViewById(R.id.headline);
         this.sender = (TextView) v.findViewById(R.id.sender);
         this.story = (TextView) v.findViewById(R.id.story);
